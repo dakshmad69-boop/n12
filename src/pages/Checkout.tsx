@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, Lock } from 'lucide-react';
+import { ArrowRight, Check, Lock, ShieldCheck, Truck } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
@@ -72,7 +72,6 @@ export function Checkout() {
           artwork_status: item.artwork_status,
         }))
       );
-      // Upsert profile
       await supabase.from('customer_profiles').upsert({
         id: user.id,
         business_name: form.business_name,
@@ -122,8 +121,8 @@ export function Checkout() {
   return (
     <div className="min-h-screen bg-neutral-50">
       <StoreHeader />
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-        <div className="flex items-end justify-between mb-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+        <div className="flex items-end justify-between mb-8">
           <div>
             <p className="text-packtoday-600 text-xs font-semibold tracking-widest uppercase">Checkout</p>
             <h1 className="mt-2 text-4xl font-semibold tracking-tight">Place your order</h1>
@@ -134,10 +133,22 @@ export function Checkout() {
             </Link>
           )}
         </div>
-        <form onSubmit={placeOrder} className="grid lg:grid-cols-[1fr_340px] gap-8">
+
+        <div className="flex items-center gap-2 mb-10 text-sm">
+          <span className="flex items-center gap-2 text-packtoday-700 font-medium"><span className="w-6 h-6 rounded-full bg-packtoday-500 text-white flex items-center justify-center text-xs font-semibold">1</span> Details</span>
+          <span className="w-8 h-px bg-neutral-300" />
+          <span className="flex items-center gap-2 text-neutral-400"><span className="w-6 h-6 rounded-full bg-neutral-200 text-neutral-500 flex items-center justify-center text-xs font-semibold">2</span> Payment</span>
+          <span className="w-8 h-px bg-neutral-300" />
+          <span className="flex items-center gap-2 text-neutral-400"><span className="w-6 h-6 rounded-full bg-neutral-200 text-neutral-500 flex items-center justify-center text-xs font-semibold">3</span> Confirmation</span>
+        </div>
+
+        <form onSubmit={placeOrder} className="grid lg:grid-cols-[1fr_380px] gap-8">
           <div className="space-y-6">
-            <div className="bg-white border border-neutral-200 rounded-xl p-6">
-              <h2 className="font-semibold mb-4">Business & contact details</h2>
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-8 h-8 rounded-lg bg-packtoday-100 flex items-center justify-center text-packtoday-700 font-semibold text-sm">1</span>
+                <h2 className="font-semibold text-lg">Business & contact details</h2>
+              </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <CField label="Business name" value={form.business_name} onChange={(v) => set('business_name', v)} placeholder="Your business" />
                 <CField label="Full name" value={form.full_name} onChange={(v) => set('full_name', v)} placeholder="Full name" required />
@@ -146,8 +157,12 @@ export function Checkout() {
                 <CField label="GST number" value={form.gst_number} onChange={(v) => set('gst_number', v)} placeholder="GST number" />
               </div>
             </div>
-            <div className="bg-white border border-neutral-200 rounded-xl p-6">
-              <h2 className="font-semibold mb-4">Addresses</h2>
+
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-8 h-8 rounded-lg bg-packtoday-100 flex items-center justify-center text-packtoday-700 font-semibold text-sm">2</span>
+                <h2 className="font-semibold text-lg">Delivery address</h2>
+              </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <CField label="Billing address" value={form.billing_address} onChange={(v) => set('billing_address', v)} placeholder="Billing address" required />
                 <CField label="Shipping address" value={form.shipping_address} onChange={(v) => set('shipping_address', v)} placeholder="Shipping address" required />
@@ -156,17 +171,23 @@ export function Checkout() {
                 <CField label="PIN" value={form.pin} onChange={(v) => set('pin', v)} placeholder="PIN code" required />
               </div>
             </div>
-            <div className="bg-white border border-neutral-200 rounded-xl p-6">
-              <h2 className="font-semibold mb-4">Payment & notes</h2>
+
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <span className="w-8 h-8 rounded-lg bg-packtoday-100 flex items-center justify-center text-packtoday-700 font-semibold text-sm">3</span>
+                <h2 className="font-semibold text-lg">Payment & notes</h2>
+              </div>
               <div className="space-y-4">
-                <label className="block">
-                  <span className="block text-sm font-medium mb-2">Payment method</span>
-                  <select value={form.payment_method} onChange={(e) => set('payment_method', e.target.value)} className="w-full border border-neutral-300 rounded-lg px-3.5 py-3 text-sm outline-none focus:border-packtoday-500">
-                    <option>Bank Transfer</option>
-                    <option>UPI</option>
-                    <option>Cheque</option>
-                  </select>
-                </label>
+                <div>
+                  <span className="block text-sm font-medium mb-3">Payment method</span>
+                  <div className="grid sm:grid-cols-3 gap-3">
+                    {['Bank Transfer', 'UPI', 'Cheque'].map((method) => (
+                      <button key={method} type="button" onClick={() => set('payment_method', method)} className={`px-4 py-3 rounded-lg border text-sm font-medium transition-all ${form.payment_method === method ? 'border-packtoday-500 bg-packtoday-50 text-packtoday-700' : 'border-neutral-200 text-neutral-600 hover:border-neutral-400'}`}>
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <label className="block">
                   <span className="block text-sm font-medium mb-2">Order notes (optional)</span>
                   <textarea rows={3} value={form.order_notes} onChange={(e) => set('order_notes', e.target.value)} className="w-full border border-neutral-300 rounded-lg px-3.5 py-3 text-sm outline-none focus:border-packtoday-500" placeholder="Any special instructions" />
@@ -174,29 +195,37 @@ export function Checkout() {
               </div>
             </div>
           </div>
-          <div className="bg-white border border-neutral-200 rounded-xl p-6 h-fit">
-            <h2 className="font-semibold mb-5">Order summary</h2>
-            <div className="space-y-3 mb-5">
-              {items.map((item, i) => (
-                <div key={i} className="flex gap-3 text-sm">
-                  <img src={item.product_image} alt={item.product_name} className="w-12 h-12 rounded-lg object-cover" />
-                  <div className="flex-1">
-                    <p className="font-medium">{item.product_name}</p>
-                    <p className="text-xs text-neutral-500">{item.variant_value} · {item.quantity.toLocaleString()} units</p>
+
+          <div className="space-y-4">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 h-fit lg:sticky lg:top-24">
+              <h2 className="font-semibold text-lg mb-5">Order summary</h2>
+              <div className="space-y-4 mb-5 max-h-64 overflow-y-auto">
+                {items.map((item, i) => (
+                  <div key={i} className="flex gap-3 text-sm">
+                    <img src={item.product_image} alt={item.product_name} className="w-14 h-14 rounded-lg object-cover shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium">{item.product_name}</p>
+                      <p className="text-xs text-neutral-500 mt-0.5">{item.variant_value} · {item.quantity.toLocaleString()} units</p>
+                      <p className="text-xs text-packtoday-600 mt-0.5">{item.customisation_option}</p>
+                    </div>
+                    <p className="font-medium shrink-0">₹{(item.unit_price * item.quantity).toFixed(2)}</p>
                   </div>
-                  <p className="font-medium">₹{(item.unit_price * item.quantity).toFixed(2)}</p>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="space-y-2 text-sm border-t border-neutral-200 pt-4">
+                <div className="flex justify-between text-neutral-600"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
+                <div className="flex justify-between text-neutral-600"><span>Shipping</span><span>{shipping === 0 ? 'Free' : `₹${shipping.toFixed(2)}`}</span></div>
+                <div className="border-t border-neutral-200 pt-2 flex justify-between font-semibold text-base"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
+              </div>
+              <button type="submit" disabled={placing} className="mt-6 w-full bg-packtoday-500 hover:bg-packtoday-600 text-white py-3.5 rounded-lg font-semibold transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
+                {placing ? 'Placing order...' : <>Place order <Lock className="w-4 h-4" /></>}
+              </button>
+              <div className="mt-5 space-y-2">
+                <p className="flex items-center gap-2 text-xs text-neutral-500"><ShieldCheck className="w-4 h-4 text-packtoday-600" /> Secure checkout — your details are protected</p>
+                <p className="flex items-center gap-2 text-xs text-neutral-500"><Truck className="w-4 h-4 text-packtoday-600" /> Free shipping on orders over ₹5,000</p>
+              </div>
+              <p className="mt-4 text-[11px] text-neutral-500 text-center">By placing this order you agree to PackToday's terms of service.</p>
             </div>
-            <div className="space-y-2 text-sm border-t border-neutral-200 pt-4">
-              <div className="flex justify-between text-neutral-600"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
-              <div className="flex justify-between text-neutral-600"><span>Shipping</span><span>{shipping === 0 ? 'Free' : `₹${shipping.toFixed(2)}`}</span></div>
-              <div className="border-t border-neutral-200 pt-2 flex justify-between font-semibold text-base"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
-            </div>
-            <button type="submit" disabled={placing} className="mt-6 w-full bg-packtoday-500 hover:bg-packtoday-600 text-white py-3.5 rounded-lg font-semibold transition-colors disabled:opacity-60 flex items-center justify-center gap-2">
-              {placing ? 'Placing order...' : <>Place order <Lock className="w-4 h-4" /></>}
-            </button>
-            <p className="mt-4 text-[11px] text-neutral-500 text-center">By placing this order you agree to PackToday's terms of service.</p>
           </div>
         </form>
       </main>
@@ -208,7 +237,7 @@ function CField({ label, value, onChange, placeholder, type = 'text', required =
   return (
     <label>
       <span className="block text-sm font-medium mb-2">{label}</span>
-      <input required={required} type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full border border-neutral-300 rounded-lg px-3.5 py-3 text-sm outline-none focus:border-packtoday-500" />
+      <input required={required} type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full border border-neutral-300 rounded-lg px-3.5 py-3 text-sm outline-none focus:border-packtoday-500 focus:ring-2 focus:ring-packtoday-100 transition-all" />
     </label>
   );
 }

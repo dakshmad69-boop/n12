@@ -23,7 +23,7 @@ export function StoreHeader() {
             <nav className="hidden lg:flex items-center gap-5 ml-auto text-sm font-medium text-neutral-700">
               <Link to="/store" className="hover:text-packtoday-600">Shop All</Link>
               <Link to="/custom-packaging" className="hover:text-packtoday-600">Custom Packaging</Link>
-              <Link to="/design-services" className="hover:text-packtoday-600">Design Services</Link>
+
             </nav>
             <div className="ml-auto lg:ml-2 flex items-center gap-3">
               <Link to="/account" className="hidden sm:block text-sm font-medium text-neutral-700 hover:text-packtoday-600">Account</Link>
@@ -42,7 +42,7 @@ export function StoreHeader() {
           <div className="lg:hidden border-t bg-white px-4 py-4 space-y-3 text-sm">
             <Link className="block" to="/store">Shop All</Link>
             <Link className="block" to="/custom-packaging">Custom Packaging</Link>
-            <Link className="block" to="/design-services">Design Services</Link>
+
           </div>
         )}
       </header>

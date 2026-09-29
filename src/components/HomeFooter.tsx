@@ -39,7 +39,6 @@ export function HomeFooter() {
               <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
               <li><Link to="/store" className="hover:text-white transition-colors">Store</Link></li>
               <li><Link to="/custom-packaging" className="hover:text-white transition-colors">Custom Packaging</Link></li>
-              <li><Link to="/design-services" className="hover:text-white transition-colors">Design Services</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </div>

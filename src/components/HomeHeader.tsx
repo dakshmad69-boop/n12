@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { label: 'About Us', path: '/about' },
   { label: 'Store', path: '/store' },
   { label: 'Custom Packaging', path: '/custom-packaging' },
-  { label: 'Design Services', path: '/design-services' },
   { label: 'Contact', path: '/contact' },
 ];
 
