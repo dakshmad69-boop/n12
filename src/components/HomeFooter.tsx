@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
+import { whatsappUrl, WHATSAPP_DISPLAY } from './WhatsAppButton';
 
 export function HomeFooter() {
   return (
@@ -56,7 +57,7 @@ export function HomeFooter() {
 
         <div className="mt-12 pt-8 border-t border-neutral-800 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-neutral-500">© 2026 PackToday. All rights reserved.</p>
-          <p className="text-xs text-neutral-500">Premium B2B Custom Packaging</p>
+          <p className="text-xs text-neutral-500">H/2154 Tuwariyan ki Dhani, Vimalpura, Vidhani, Jaipur, Rajasthan 302022 · {WHATSAPP_DISPLAY}</p>
         </div>
       </div>
     </footer>

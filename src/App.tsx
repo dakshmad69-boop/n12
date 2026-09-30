@@ -11,6 +11,8 @@ import { Checkout } from '@/pages/Checkout';
 import { AuthPage } from '@/pages/AuthPage';
 import { CustomerDashboard } from '@/pages/CustomerDashboard';
 import { AdminDashboard } from '@/pages/AdminDashboard';
+import { ContactPage } from '@/pages/ContactPage';
+import { FloatingWhatsApp } from '@/components/WhatsAppButton';
 import type { CartItem } from '@/types';
 
 type Product = {
@@ -60,7 +62,7 @@ const products: Product[] = [
 const categories = ['All Products', 'Paper Cups', 'Paper Containers', 'Salad Bowls', 'Paper Boxes', 'Paper Cup Holders', 'Reusable Cups', 'Cup Lids', 'Butter Paper'];
 
 function App() {
-  return <AuthProvider><CartProvider><BrowserRouter><Routes><Route path="/" element={<Home />} /><Route path="/store" element={<Store />} /><Route path="/store/:slug" element={<ProductPage />} /><Route path="/cart" element={<Cart />} /><Route path="/checkout" element={<Checkout />} /><Route path="/auth" element={<AuthPage />} /><Route path="/account" element={<CustomerDashboard />} /><Route path="/admin" element={<AdminDashboard />} /><Route path="/about" element={<AboutPage />} /><Route path="/custom-packaging" element={<InfoPage type="custom" />} /><Route path="/contact" element={<InfoPage type="contact" />} /><Route path="/bulk-quote" element={<QuotePage />} /><Route path="*" element={<Home />} /></Routes></BrowserRouter></CartProvider></AuthProvider>;
+  return <AuthProvider><CartProvider><BrowserRouter><div className="min-h-screen"><FloatingWhatsApp /><Routes><Route path="/" element={<Home />} /><Route path="/store" element={<Store />} /><Route path="/store/:slug" element={<ProductPage />} /><Route path="/cart" element={<Cart />} /><Route path="/checkout" element={<Checkout />} /><Route path="/auth" element={<AuthPage />} /><Route path="/account" element={<CustomerDashboard />} /><Route path="/admin" element={<AdminDashboard />} /><Route path="/about" element={<AboutPage />} /><Route path="/custom-packaging" element={<InfoPage type="custom" />} /><Route path="/contact" element={<ContactPage />} /><Route path="/bulk-quote" element={<QuotePage />} /><Route path="*" element={<Home />} /></Routes></div></BrowserRouter></CartProvider></AuthProvider>;
 }
 
 function Home() {
